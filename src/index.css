@@ -16,7 +16,18 @@ body {
 }
 
 .message {
-  padding: 5px;
-  margin: 5px;
-  border: 1px solid black;
+  width: auto;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 8px;
+}
+
+.msgReceived {
+  background: white;
+  color: black;
+}
+
+.msgSent {
+  background: #722277;
+  color: white;
 }

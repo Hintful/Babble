@@ -17,7 +17,7 @@ const Chatroom = () => {
 
   return (
     <Flex direction="column">
-      <Box w="100%" h="1fr" bg="gray.100">
+      <Box w="100%" h="auto" pb="5px" style={{ overflow: "auto", maxHeight: "90vh" }}>
         {messages &&
           messages.map(message => <Message message={message} />)
         }
@@ -34,7 +34,6 @@ const Chatroom = () => {
               uid,
               photoURL
             });
-
             setText("");
           }}>
           <FormControl isRequired>
