@@ -6,3 +6,17 @@
 body {
   margin: 0;
 }
+
+.navbar-logo {
+  /* make text non-selectable */
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
+.message {
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid black;
+}
