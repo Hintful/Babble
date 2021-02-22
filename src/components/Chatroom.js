@@ -1,5 +1,5 @@
 import { Box, Button, Flex, FormControl, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { firestore } from "../Firebase";
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import Message from './Message';
@@ -7,6 +7,7 @@ import { auth } from '../Firebase';
 import firebase from 'firebase/app';
 
 const NUM_MSG_VISIBLE = 25;
+const MSG_LENGTH_LIMIT = 100; // 100 characters
 
 const Chatroom = () => {
   const messagesRef = firestore.collection("messages");
@@ -14,13 +15,15 @@ const Chatroom = () => {
   const [messages] = useCollectionData(recentMessagesData, { idField: 'id' });
 
   const [text, setText] = useState("");
+  const pageBottom = useRef();
 
   return (
     <Flex direction="column">
-      <Box w="100%" h="auto" pb="5px" style={{ overflow: "auto", maxHeight: "90vh" }}>
+      <Box w="100%" h="auto" pb="10px" style={{ overflow: "auto", maxHeight: "90vh" }}>
         {messages &&
           messages.map(message => <Message message={message} />)
         }
+        <div ref={pageBottom}></div>
       </Box>
       <Flex w="100%" h="50px" bg="teal.200" px="5px" mt="auto" align="center" position="absolute" bottom="0">
         <form style={{ width: "100%", display: "inline-flex" }}
@@ -35,20 +38,24 @@ const Chatroom = () => {
               photoURL
             });
             setText("");
+            pageBottom.current.scrollIntoView({ behavior: "smooth" }); // scroll to bottom of page after sending msg
           }}>
           <FormControl isRequired>
             <InputGroup>
               <InputLeftElement children={<i class="fas fa-comment-dots"></i>} />
               <Input bg="white" placeholder="Type your message" value={text}
                 onChange={(e) => {
+                  if(e.target.value.length > MSG_LENGTH_LIMIT) {
+                    e.target.value = e.target.value.slice(0,MSG_LENGTH_LIMIT)
+                  }
                   setText(e.target.value);
                 }}
               />
             </InputGroup>
 
           </FormControl>
-          <Button type="submit">
-            Send
+          <Button type="submit" colorScheme="blue">
+            Send&nbsp;<i class="fas fa-paper-plane"></i>
           </Button>
         </form>
       </Flex>
