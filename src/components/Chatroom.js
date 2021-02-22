@@ -48,7 +48,7 @@ const Chatroom = () => {
   }
 
   return (
-    <Flex direction="column" justify="flex-end" pb="60px" bg="#ffffff" height="100vh">
+    <Flex direction="column" justify="flex-end" pb="45px" bg="#ffffff" height="99vh">
       <Toaster />
       <Box w="100%" h="auto" style={{ overflow: "auto", maxHeight: "95%" }}>
         {messages &&
