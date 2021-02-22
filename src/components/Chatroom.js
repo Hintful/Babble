@@ -1,5 +1,5 @@
-import { Box, Button, Flex, FormControl, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
+import { Box, Button, Flex, FormControl, Input, InputGroup, InputLeftElement, useTimeout } from '@chakra-ui/react';
+import React, { useEffect, useRef, useState } from 'react';
 import { firestore } from "../Firebase";
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import Message from './Message';
@@ -11,17 +11,29 @@ const MSG_LENGTH_LIMIT = 100; // 100 characters
 
 const Chatroom = () => {
   const messagesRef = firestore.collection("messages");
-  const recentMessagesData = messagesRef.orderBy('createdAt').limit(NUM_MSG_VISIBLE);
+  const recentMessagesData = messagesRef.orderBy('createdAt', "desc").limit(NUM_MSG_VISIBLE);
   const [messages] = useCollectionData(recentMessagesData, { idField: 'id' });
 
   const [text, setText] = useState("");
+  const [sendEnabled, setSendEnabled] = useState(true);
   const pageBottom = useRef();
+
+  useEffect(() => {
+    pageBottom.current.scrollIntoView({ behavior: "smooth" });
+  });
+
+  const sendMsgCooldown = () => {
+    setSendEnabled(false);
+    setTimeout(() => {
+      setSendEnabled(true);
+    }, 1000);
+  }
 
   return (
     <Flex direction="column">
       <Box w="100%" h="auto" pb="10px" style={{ overflow: "auto", maxHeight: "90vh" }}>
         {messages &&
-          messages.map(message => <Message message={message} />)
+          messages.reverse().map(message => <Message message={message} />)
         }
         <div ref={pageBottom}></div>
       </Box>
@@ -31,6 +43,8 @@ const Chatroom = () => {
             e.preventDefault(); // prevent page refresh
             const { uid, photoURL } = auth.currentUser;
 
+            sendMsgCooldown();
+            
             await messagesRef.add({
               message: text,
               createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -39,6 +53,7 @@ const Chatroom = () => {
             });
             setText("");
             pageBottom.current.scrollIntoView({ behavior: "smooth" }); // scroll to bottom of page after sending msg
+            
           }}>
           <FormControl isRequired>
             <InputGroup>
@@ -54,7 +69,7 @@ const Chatroom = () => {
             </InputGroup>
 
           </FormControl>
-          <Button type="submit" colorScheme="blue">
+          <Button type="submit" colorScheme="blue" isDisabled={!sendEnabled}>
             Send&nbsp;<i class="fas fa-paper-plane"></i>
           </Button>
         </form>
