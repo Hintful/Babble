@@ -7,6 +7,12 @@ body {
   margin: 0;
 }
 
+.app {
+  height: 100vh;
+}
+
+
+
 .navbar-logo {
   /* make text non-selectable */
   -webkit-user-select: none; /* Safari */        
@@ -23,10 +29,8 @@ body {
 
 .message {
   width: auto;
-  padding: 10px;
+  padding: 10px 15px;
   margin: 10px;
-  padding-right: 15px;
-  padding-left: 15px;
 }
 
 .msgReceived {

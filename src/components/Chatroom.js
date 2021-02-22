@@ -14,7 +14,7 @@ const MSG_SEND_COOLDOWN = 1000; // 1000ms = 1s
 
 const Chatroom = () => {
   const messagesRef = firestore.collection("messages");
-  const recentMessagesData = messagesRef.orderBy('createdAt', "desc").limit(NUM_MSG_VISIBLE);
+  const recentMessagesData = messagesRef.orderBy('createdAt').limit(NUM_MSG_VISIBLE);
   const [messages] = useCollectionData(recentMessagesData, { idField: 'id' });
 
   const [text, setText] = useState("");
@@ -48,15 +48,15 @@ const Chatroom = () => {
   }
 
   return (
-    <Flex direction="column" bg="#ffffff" height="90vh">
+    <Flex direction="column" bg="#ffffff" height="100vh">
       <Toaster />
-      <Box w="100%" h="auto" pb="10px" style={{ overflow: "auto", maxHeight: "90vh" }}>
+      <Box w="100%" h="auto" pb="30px" style={{ overflow: "auto", maxHeight: "95%" }}>
         {messages &&
-          messages.reverse().map(message => <Message message={message} />)
+          messages.map(message => <Message message={message} />)
         }
         <div ref={pageBottom}></div>
       </Box>
-      <Flex w="100%" h="50px" bg="gray.300" px="5px" mt="auto" mr="5px" align="center" position="absolute" bottom="0">
+      <Flex w="100%" h="50px" bg="gray.300" px="5px" mt="auto" mr="5px" align="center" position="fixed" bottom="0">
         <form style={{ width: "100%", display: "inline-flex" }}
           onSubmit={async (e) => {
             e.preventDefault(); // prevent page refresh

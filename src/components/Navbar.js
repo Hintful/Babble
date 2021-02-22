@@ -4,7 +4,7 @@ import Signout from './Signout';
 
 const Navbar = () => {
   return (
-    <Flex direction="row" px="5px" align="center" h="50px" w="100%" bg="gray.300">
+    <Flex direction="row" px="5px" align="center" h="50px" w="100%" bg="white" position="fixed" top="0" zIndex="1">
       <Text className="navbar-logo" fontFamily="Poppins" fontWeight="600" fontSize="lg" ml="10px">
         <i class="fas fa-comments emphasis"></i> Babble
       </Text>
