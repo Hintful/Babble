@@ -2,6 +2,7 @@ import { Button } from '@chakra-ui/react';
 import React from 'react';
 import { auth } from '../Firebase';
 import toast, { Toaster } from 'react-hot-toast';
+import ReactGA from 'react-ga';
 
 const Signout = () => {
   return (
@@ -12,6 +13,10 @@ const Signout = () => {
         onClick={() => {
           if (auth.currentUser) {
             auth.signOut();
+            ReactGA.event({
+              category: 'Babble',
+              action: 'User has signed out'
+            });
             toast(`You have signed out.`,
               {
                 icon: '🚪',

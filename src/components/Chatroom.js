@@ -7,6 +7,7 @@ import { auth } from '../Firebase';
 import firebase from 'firebase/app';
 import { expToLevel } from './UserBadge';
 import toast, { Toaster } from 'react-hot-toast';
+import ReactGA from 'react-ga';
 
 const NUM_MSG_VISIBLE = 25;
 const MSG_LENGTH_LIMIT = 100; // 100 characters
@@ -69,6 +70,10 @@ const Chatroom = () => {
               createdAt: firebase.firestore.FieldValue.serverTimestamp(),
               uid,
               photoURL
+            });
+            ReactGA.event({
+              category: 'Babble',
+              action: 'User sent a message'
             });
             const increment = firebase.firestore.FieldValue.increment(1);
             const userRef = firestore.collection("users").doc(uid);

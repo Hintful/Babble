@@ -3,6 +3,7 @@ import React from 'react';
 import firebase from 'firebase/app';
 import { auth, firestore } from "../Firebase";
 import toast, { Toaster } from 'react-hot-toast';
+import ReactGA from 'react-ga';
 
 function handleSignin() {
   const googleAuth = new firebase.auth.GoogleAuthProvider();
@@ -15,6 +16,10 @@ function handleSignin() {
       }
     })
   }).then(() => {
+    ReactGA.event({
+      category: 'Babble',
+      action: 'User has signed in'
+    });
     toast.success(`You have signed in!`,
       {
         duration: 3000
