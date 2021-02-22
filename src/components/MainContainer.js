@@ -9,7 +9,7 @@ import Signin from './Signin';
 const MainContainer = () => {
   const [user, loading, error] = useAuthState(auth);
   return (  
-    <Box w="100vw" h="100vh" bg="black">
+    <Box w="100vw" h="100vh" bg="white">
       <Navbar />
       { user ? <Chatroom /> : <Signin />}
     </Box>

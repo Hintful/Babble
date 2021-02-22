@@ -38,7 +38,7 @@ const Chatroom = () => {
         }
         <div ref={pageBottom}></div>
       </Box>
-      <Flex w="100%" h="50px" bg="teal.200" px="5px" mt="auto" mr="5px" align="center" position="absolute" bottom="0">
+      <Flex w="100%" h="50px" bg="gray.300" px="5px" mt="auto" mr="5px" align="center" position="absolute" bottom="0">
         <form style={{ width: "100%", display: "inline-flex" }}
           onSubmit={async(e) => {
             e.preventDefault(); // prevent page refresh
@@ -73,8 +73,10 @@ const Chatroom = () => {
           
           <Divider orientation="vertical"/>
 
-          <Button ml="5px" type="submit" colorScheme="blue" isDisabled={!sendEnabled}>
-            Send&nbsp;<i class="fas fa-paper-plane"></i>
+          <Button ml="5px" type="submit" colorScheme="blue" isDisabled={!sendEnabled}
+            rightIcon={<i class="fas fa-paper-plane"></i>}
+          >
+            Send
           </Button>
         </form>
       </Flex>
