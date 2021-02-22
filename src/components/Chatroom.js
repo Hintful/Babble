@@ -52,6 +52,9 @@ const Chatroom = () => {
               uid,
               photoURL
             });
+            const increment = firebase.firestore.FieldValue.increment(1);
+            const userRef = firestore.collection("users").doc(uid);
+            const res = await userRef.update({ exp: increment });
             setText("");
             pageBottom.current.scrollIntoView({ behavior: "smooth" }); // scroll to bottom of page after sending msg
             
