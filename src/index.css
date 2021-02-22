@@ -19,15 +19,18 @@ body {
   width: auto;
   padding: 10px;
   margin: 10px;
-  border-radius: 8px;
+  padding-right: 15px;
+  padding-left: 15px;
 }
 
 .msgReceived {
-  background: white;
+  background: #E4E6EB;
   color: black;
+  border-radius: 25px 25px 25px 5px;
 }
 
 .msgSent {
-  background: #722277;
+  background: #0199FF;
   color: white;
+  border-radius: 25px 25px 5px 25px;
 }
