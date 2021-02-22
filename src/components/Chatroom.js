@@ -48,9 +48,9 @@ const Chatroom = () => {
   }
 
   return (
-    <Flex direction="column" bg="#ffffff" height="100vh">
+    <Flex direction="column" justify="flex-end" pb="60px" bg="#ffffff" height="100vh">
       <Toaster />
-      <Box w="100%" h="auto" pb="30px" style={{ overflow: "auto", maxHeight: "95%" }}>
+      <Box w="100%" h="auto" style={{ overflow: "auto", maxHeight: "95%" }}>
         {messages &&
           messages.map(message => <Message message={message} />)
         }
