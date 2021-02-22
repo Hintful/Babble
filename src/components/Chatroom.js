@@ -5,6 +5,8 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import Message from './Message';
 import { auth } from '../Firebase';
 import firebase from 'firebase/app';
+import { expToLevel } from './UserBadge';
+import toast, { Toaster } from 'react-hot-toast';
 
 const NUM_MSG_VISIBLE = 25;
 const MSG_LENGTH_LIMIT = 100; // 100 characters
@@ -19,6 +21,21 @@ const Chatroom = () => {
   const [sendEnabled, setSendEnabled] = useState(true);
   const pageBottom = useRef();
 
+  const checkLevelUp = (uid) => {
+    const userRef = firestore.collection("users").doc(uid);
+    userRef.get().then((docSnapshot) => {
+      const exp = docSnapshot.get("exp");
+
+      if (expToLevel(exp) > expToLevel(exp - 1)) {
+        toast(`You have leveled up!`,
+          {
+            icon: '👏',
+            duration: 7000
+          });
+      }
+    })
+  }
+
   useEffect(() => {
     pageBottom.current.scrollIntoView({ behavior: "smooth" });
   });
@@ -32,6 +49,7 @@ const Chatroom = () => {
 
   return (
     <Flex direction="column" bg="#ffffff" height="90vh">
+      <Toaster />
       <Box w="100%" h="auto" pb="10px" style={{ overflow: "auto", maxHeight: "90vh" }}>
         {messages &&
           messages.reverse().map(message => <Message message={message} />)
@@ -40,7 +58,7 @@ const Chatroom = () => {
       </Box>
       <Flex w="100%" h="50px" bg="gray.300" px="5px" mt="auto" mr="5px" align="center" position="absolute" bottom="0">
         <form style={{ width: "100%", display: "inline-flex" }}
-          onSubmit={async(e) => {
+          onSubmit={async (e) => {
             e.preventDefault(); // prevent page refresh
             const { uid, photoURL } = auth.currentUser;
 
@@ -55,17 +73,18 @@ const Chatroom = () => {
             const increment = firebase.firestore.FieldValue.increment(1);
             const userRef = firestore.collection("users").doc(uid);
             const res = await userRef.update({ exp: increment });
+            checkLevelUp(uid);
             setText("");
             pageBottom.current.scrollIntoView({ behavior: "smooth" }); // scroll to bottom of page after sending msg
-            
+
           }}>
           <FormControl isRequired>
             <InputGroup>
               <InputLeftElement children={<i class="fas fa-comment-dots"></i>} />
               <Input bg="white" placeholder="Type your message..." value={text}
                 onChange={(e) => {
-                  if(e.target.value.length > MSG_LENGTH_LIMIT) {
-                    e.target.value = e.target.value.slice(0,MSG_LENGTH_LIMIT)
+                  if (e.target.value.length > MSG_LENGTH_LIMIT) {
+                    e.target.value = e.target.value.slice(0, MSG_LENGTH_LIMIT)
                   }
                   setText(e.target.value);
                 }}
@@ -73,8 +92,8 @@ const Chatroom = () => {
             </InputGroup>
 
           </FormControl>
-          
-          <Divider orientation="vertical"/>
+
+          <Divider orientation="vertical" />
 
           <Button ml="5px" type="submit" colorScheme="blue" isDisabled={!sendEnabled}
             rightIcon={<i class="fas fa-paper-plane"></i>}

@@ -2,6 +2,7 @@ import { Button, Center } from '@chakra-ui/react';
 import React from 'react';
 import firebase from 'firebase/app';
 import { auth, firestore } from "../Firebase";
+import toast, { Toaster } from 'react-hot-toast';
 
 function handleSignin() {
   const googleAuth = new firebase.auth.GoogleAuthProvider();
@@ -14,20 +15,26 @@ function handleSignin() {
       }
     })
   }).then(() => {
-    //
+    toast.success(`You have signed in!`,
+      {
+        duration: 3000
+      });
   });
 }
 
 const Signin = () => {
   return (
-    <Center w="100%" h="90vh" bg="white">
-      <Button colorScheme="green"
-        leftIcon={<i class="fas fa-sign-in-alt"></i>}
-        onClick={() => { handleSignin() }}
-      >
-        Sign-in with Google
-      </Button>
-    </Center>
+    <>
+      <Toaster />
+      <Center w="100%" h="90vh" bg="white">
+        <Button colorScheme="green"
+          leftIcon={<i class="fas fa-sign-in-alt"></i>}
+          onClick={() => { handleSignin() }}
+        >
+          Sign-in with Google
+        </Button>
+      </Center>
+    </>
   );
 }
 

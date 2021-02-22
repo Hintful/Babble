@@ -1,7 +1,7 @@
 import { AvatarBadge } from '@chakra-ui/react';
 import React from 'react';
 
-function expToLevel(exp) {
+export function expToLevel(exp) {
   return Math.floor(Math.sqrt(exp)/2);
 }
 
@@ -16,6 +16,10 @@ function getBadgeColor(level) {
     return "#0000ff";
   } else if(level <= 8) { // 7-8
     return "#8a2be2";
+  } else if(level <= 10) {
+    return "#ff8c00";
+  } else {
+    return "#ff0000";
   }
 }
 
@@ -24,7 +28,7 @@ function getBadgeTextColor(level) {
     return "black";
   } else if(level <= 2) {
     return "black";
-  } else if(level <= 8) {
+  } else {
     return "white";
   }
 }
