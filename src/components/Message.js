@@ -1,18 +1,25 @@
 import { Avatar, AvatarBadge, Box, Flex } from '@chakra-ui/react';
-import React from 'react';
-import { auth } from '../Firebase';
+import React, { useState } from 'react';
+import { auth, firestore } from '../Firebase';
+import UserBadge from './UserBadge';
+
+
 
 const Message = ({ message }) => {
   const msgClass = message.uid === auth.currentUser.uid ? "msgSent" : "msgReceived";
-  const senderLevel = 0;
+  const [senderExp, setSenderExp] = useState(0);
+
+  const userRef = firestore.collection("users").doc(message.uid);
+  userRef.get().then((docSnapshot) => {
+    setSenderExp(docSnapshot.get("exp"));
+  })
+
   return (
     <>
       {message.uid !== auth.currentUser.uid ?
         <Flex direction="row" align="center" mt="10px" ml="15px">
           <Avatar size="md" src={message.photoURL}>
-            <AvatarBadge boxSize="1em" bg="teal" style={{ border: "2px solid white" }}>
-              <span style={{ color: "white", fontWeight: "200", fontSize: 12 }}>{senderLevel}</span>
-            </AvatarBadge>
+            <UserBadge exp={senderExp} />
           </Avatar>
           <Box width="auto" className={`message ${msgClass}`}>
             {message.message}
@@ -24,9 +31,7 @@ const Message = ({ message }) => {
             {message.message}
           </Box>
           <Avatar size="md" src={message.photoURL}>
-            <AvatarBadge boxSize="1em" bg="teal" style={{ border: "2px solid white" }}>
-              <span style={{ color: "white", fontWeight: "200", fontSize: 12 }}>{senderLevel}</span>
-            </AvatarBadge>
+            <UserBadge exp={senderExp} />
           </Avatar>
         </Flex>
       }
