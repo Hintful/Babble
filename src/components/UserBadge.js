@@ -33,7 +33,7 @@ const UserBadge = ({ exp }) => {
   const level = expToLevel(exp);
   return (  
     <AvatarBadge boxSize="1em" bg={getBadgeColor(level)} style={{ border: "2px solid white" }}>
-      <span style={{ color: getBadgeTextColor(level), fontWeight: "200", fontSize: 12 }}>{level}</span>
+      <span style={{ color: getBadgeTextColor(level), fontWeight: "600", fontSize: 12 }}>{level}</span>
     </AvatarBadge>
   );
 }
